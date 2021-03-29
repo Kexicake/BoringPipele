@@ -957,9 +957,9 @@ GameObject:
   m_Component:
   - component: {fileID: 958334257}
   - component: {fileID: 958334256}
+  - component: {fileID: 958334258}
   - component: {fileID: 958334255}
   - component: {fileID: 958334254}
-  - component: {fileID: 958334258}
   m_Layer: 0
   m_Name: Codabr_0
   m_TagString: Untagged
@@ -1085,8 +1085,7 @@ MonoBehaviour:
   walkParameterName: isWalk
   firstPlat: -0.588
   secondPlat: 1.38
-  therdPlat: 3.45
-  dPlat: 0
+  therdPlat: 3.4
 --- !u!1 &1724545390
 GameObject:
   m_ObjectHideFlags: 0
