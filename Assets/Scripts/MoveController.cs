@@ -19,8 +19,6 @@ public class MoveController : MonoBehaviour
     public float therdPlat = 3.45f;
 
 
-    [Header("Шакал ебучий")]
-    public float dPlat = 0f;
 
     private SpriteRenderer spriteRenderer;
     private CapsuleCollider2D cc2d;
@@ -33,6 +31,8 @@ public class MoveController : MonoBehaviour
     private bool isTherd = false;
     private bool isStay = true;
     private bool isTurnRight = true;
+    private float newPoz;
+    private bool keyName = false;
 
     private void Awake ()
     {
@@ -44,7 +44,7 @@ public class MoveController : MonoBehaviour
     
     private void FixedUpdate()
     {
-CheckIsCanMove();
+
     
         float movement = Input.GetAxis("Vertical");
 
@@ -59,69 +59,63 @@ CheckIsCanMove();
 
         if (animator != null)
             animator.SetBool(walkParameterName, !isStay);
+        if (keyName)
+            Movemente();
 
-        if (rb2d != null)
-        {
-            if (isFirst)
-            {
-                if (this.gameObject.transform.position.y >= secondPlat)
+        
+        if (this.gameObject.transform.position.y >= secondPlat)
                 {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                }
-                if (Input.GetKeyDown(KeyCode.W))
-                {
-                    print(this.gameObject.transform.position.y);
-
-                    if (this.gameObject.transform.position.y >= secondPlat)
-                    {
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                    }
-                    else
-                    {
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, 1 * speed);
-                    }   
-                }
-                if (this.gameObject.transform.position.y >= secondPlat)
-                {
+                    //rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
                     isFirst = false;
                     isSecond = true;
                 }
-                
-            }else if (isSecond)
-            {
                 if (this.gameObject.transform.position.y >= therdPlat)
                 {
                     rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
                 }
-                if (Input.GetKeyDown(KeyCode.W))
-                {
-                    print(this.gameObject.transform.position.y);
-
-                    if (this.gameObject.transform.position.y >= therdPlat)
-                    {
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                    }
-                    else
-                    {
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, 1 * speed);
-                    }
-                }
                 if (this.gameObject.transform.position.y >= therdPlat)
                 {
-                    isSecond = false;
+                //rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                isSecond = false;
                     isTherd = true;
                 }
-                
-            }
-        }  
-    }
+       
 
-    private void CheckIsCanMove()
+
+
+    }
+    private void Update()
     {
-        cc2d.enabled = false;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, isTurnRight ? Vector3.down : Vector3.up, cc2d.size.y + 0.1f);
-        cc2d.enabled = true;
-
-        isCanMove = !hit.collider || hit.collider.isTrigger;
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            keyName = true;
+        }
     }
+    private void Movemente()
+    {
+       
+        if (isFirst)
+        {
+            newPoz = secondPlat;
+        }
+        if (isSecond){
+            newPoz = therdPlat;
+        }
+        if (isTherd)
+        {
+            newPoz = secondPlat;
+        }
+
+        if (this.gameObject.transform.position.y >= newPoz)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+            keyName = false;
+        }
+        else 
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x, speed);
+        }
+        
+    }
+
 }
