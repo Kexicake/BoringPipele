@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoveController : MonoBehaviour
-{
+public class MoveController : MonoBehaviour{
     [Header("Скорость передвижения")]
     public float speed = 7f;
 
@@ -34,88 +33,59 @@ public class MoveController : MonoBehaviour
     private float newPoz;
     private bool keyName = false;
 
-    private void Awake ()
-    {
+    private void Awake (){
         rb2d = GetComponent<Rigidbody2D>();
         cc2d = GetComponent<CapsuleCollider2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
     
-    private void FixedUpdate()
-    {
-
-    
+    private void FixedUpdate(){
         float movement = Input.GetAxis("Vertical");
 
         isStay = Mathf. Abs(movement) <= 0.15f;
 
-        if (movement > 0)
-            isTurnRight = true;
-        else if (movement < 0)
-            isTurnRight = true;
-
-        spriteRenderer.flipX = !isTurnRight;
-
+    
         if (animator != null)
             animator.SetBool(walkParameterName, !isStay);
         if (keyName)
             Movemente();
 
-        
-        if (this.gameObject.transform.position.y >= secondPlat)
-                {
-                    //rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                    isFirst = false;
-                    isSecond = true;
-                }
-                if (this.gameObject.transform.position.y >= therdPlat)
-                {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                }
-                if (this.gameObject.transform.position.y >= therdPlat)
-                {
-                //rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                isSecond = false;
-                    isTherd = true;
-                }
-       
-
-
-
+        if (this.gameObject.transform.position.y >= secondPlat){
+            isFirst = false;
+            isSecond = true;
+        }
+        if (this.gameObject.transform.position.y >= therdPlat){
+            rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+        }
+        if (this.gameObject.transform.position.y >= therdPlat){
+            isSecond = false;
+            isTherd = true;
+        }
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
+    private void Update(){
+        if (Input.GetKeyDown(KeyCode.W)){
             keyName = true;
         }
     }
-    private void Movemente()
-    {
+    private void Movemente(){
        
-        if (isFirst)
-        {
+        if (isFirst){
             newPoz = secondPlat;
         }
         if (isSecond){
             newPoz = therdPlat;
         }
-        if (isTherd)
-        {
+        if (isTherd){
             newPoz = secondPlat;
         }
 
-        if (this.gameObject.transform.position.y >= newPoz)
-        {
+        if (this.gameObject.transform.position.y >= newPoz){
             rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
             keyName = false;
         }
-        else 
-        {
+        else{
             rb2d.velocity = new Vector2(rb2d.velocity.x, speed);
-        }
-        
+        } 
     }
-
 }
