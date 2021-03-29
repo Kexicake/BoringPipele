@@ -29,7 +29,8 @@ public class MoveController : MonoBehaviour{
     private bool isStay = true;
     private bool isTurnRight = true;
     private float newPoz;
-    private bool keyName = false;
+    private bool up = false;
+    private bool down = false;
 
     private void Awake (){
         rb2d = GetComponent<Rigidbody2D>();
@@ -44,7 +45,7 @@ public class MoveController : MonoBehaviour{
     
         if (animator != null)
             animator.SetBool(walkParameterName, !isStay);
-        if (keyName)
+        if (up)
             Movemente();
 
         if (this.gameObject.transform.position.y >= secondPlat){
@@ -60,9 +61,18 @@ public class MoveController : MonoBehaviour{
         }
     }
     private void Update(){
-        if (Input.GetKeyDown(KeyCode.W)){
-            keyName = true;
-        }
+        if (Input.GetKeyDown(KeyCode.W))
+            up = true;
+        if (Input.GetKeyDown(KeyCode.S))
+            down = true;
+        check();
+    }
+    private void check()
+    {
+        if (isFirst)
+            down = false;
+        if (isTherd)
+            up = false;
     }
     private void Movemente(){
        
@@ -78,7 +88,7 @@ public class MoveController : MonoBehaviour{
 
         if (this.gameObject.transform.position.y >= newPoz){
             rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-            keyName = false;
+            up = false;
         }
         else{
             rb2d.velocity = new Vector2(rb2d.velocity.x, speed);
