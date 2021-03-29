@@ -17,19 +17,15 @@ public class MoveController : MonoBehaviour{
     [Header("Третье положение")]
     public float therdPlat = 3.45f;
 
-
-
     private SpriteRenderer spriteRenderer;
     private CapsuleCollider2D cc2d;
     private Rigidbody2D rb2d;
     private Animator animator;
 
-    private bool isCanMove = true;
     private bool isFirst = true;
     private bool isSecond = false;
-    private bool isTherd = false;
+    private bool isTherd = false;   
     private bool isStay = true;
-    private bool isTurnRight = true;
     private float newPoz;
     private bool keyName = false;
 
@@ -41,16 +37,8 @@ public class MoveController : MonoBehaviour{
     }
     
     private void FixedUpdate(){
-        float movement = Input.GetAxis("Vertical");
-
-        isStay = Mathf. Abs(movement) <= 0.15f;
-
-    
         if (animator != null)
             animator.SetBool(walkParameterName, !isStay);
-        if (keyName)
-            Movemente();
-
         if (this.gameObject.transform.position.y >= secondPlat){
             isFirst = false;
             isSecond = true;
@@ -63,13 +51,14 @@ public class MoveController : MonoBehaviour{
             isTherd = true;
         }
     }
+
     private void Update(){
         if (Input.GetKeyDown(KeyCode.W)){
             keyName = true;
         }
     }
-    private void Movemente(){
-       
+
+    private void Movemente(){ 
         if (isFirst){
             newPoz = secondPlat;
         }
@@ -79,7 +68,6 @@ public class MoveController : MonoBehaviour{
         if (isTherd){
             newPoz = secondPlat;
         }
-
         if (this.gameObject.transform.position.y >= newPoz){
             rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
             keyName = false;
