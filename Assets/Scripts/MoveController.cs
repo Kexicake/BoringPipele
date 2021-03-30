@@ -14,84 +14,76 @@ public class MoveController : MonoBehaviour{
     [Header("Второе положение")]
     public float secondPlat = 1.48f;
 
-    [Header("Третье положение")]
-    public float therdPlat = 3.45f;
 
-    private SpriteRenderer spriteRenderer;
-    private CapsuleCollider2D cc2d;
     private Rigidbody2D rb2d;
     private Animator animator;
 
-    private bool isCanMove = true;
     private bool isFirst = true;
-    private bool isSecond = false;
-    private bool isTherd = false;   
+    private bool isSecond = false;  
     private bool isStay = true;
-    private bool isTurnRight = true;
     private float newPoz;
-    private bool up = false;
-    private bool down = false;
+    private bool tap = false;
 
     private void Awake (){
-        rb2d = GetComponent<Rigidbody2D>();
-        cc2d = GetComponent<CapsuleCollider2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+    rb2d = GetComponent<Rigidbody2D>();
+    animator = GetComponent<Animator>();  
     }
     
     private void FixedUpdate(){
-        
 
-    
         if (animator != null)
             animator.SetBool(walkParameterName, !isStay);
-        if (up)
+        if (tap)
             Movemente();
 
-        if (this.gameObject.transform.position.y >= secondPlat){
+        if (gameObject.transform.position.y >= secondPlat){
             isFirst = false;
             isSecond = true;
         }
-        if (this.gameObject.transform.position.y >= therdPlat){
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-        }
-        if (this.gameObject.transform.position.y >= therdPlat){
+        if (gameObject.transform.position.y <= firstPlat+0.2)
+        {
+            isFirst = true;
             isSecond = false;
-            isTherd = true;
-        }
-    }
-    private void Update(){
-        if (Input.GetKeyDown(KeyCode.W))
-            up = true;
-        if (Input.GetKeyDown(KeyCode.S))
-            down = true;
-        check();
-    }
-    private void check()
-    {
-        if (isFirst)
-            down = false;
-        if (isTherd)
-            up = false;
-    }
-    private void Movemente(){
-       
-        if (isFirst){
-            newPoz = secondPlat;
-        }
-        if (isSecond){
-            newPoz = therdPlat;
-        }
-        if (isTherd){
-            newPoz = secondPlat;
         }
 
-        if (this.gameObject.transform.position.y >= newPoz){
-            rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-            up = false;
+    }
+    private void Update(){
+        if (Input.GetKeyDown(KeyCode.Space))
+            tap = true;
+    }
+
+    private void Movemente()
+    {
+
+        if (isFirst)
+        {
+            newPoz = secondPlat;
+            if (gameObject.transform.position.y >= newPoz)
+            {
+                animator.Play("run");
+                rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                tap = false;
+            }
+            else
+            {
+                animator.Play("jump");
+                rb2d.velocity = new Vector2(rb2d.velocity.x, speed);
+            }
         }
-        else{
-            rb2d.velocity = new Vector2(rb2d.velocity.x, speed);
-        } 
+        if (isSecond)
+        {
+            newPoz = firstPlat;
+            if (gameObject.transform.position.y <= newPoz+0.2)
+            {
+                animator.Play("run");
+                rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                tap = false;
+            }
+            else
+            {
+                animator.Play("jump");
+                rb2d.velocity = new Vector2(rb2d.velocity.x, -1 * speed);
+            }
+        }
     }
 }
