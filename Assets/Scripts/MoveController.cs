@@ -20,7 +20,6 @@ public class MoveController : MonoBehaviour{
 
     private bool isFirst = true;
     private bool isSecond = false;  
-    private bool isStay = true;
     private float newPoz;
     private bool tap = false;
 
@@ -31,8 +30,7 @@ public class MoveController : MonoBehaviour{
     
     private void FixedUpdate(){
 
-        if (animator != null)
-            animator.SetBool(walkParameterName, !isStay);
+        
         if (tap)
             Movemente();
 
